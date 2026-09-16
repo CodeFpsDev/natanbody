@@ -615,7 +615,7 @@
   <div class="footer-inner">
     <div class="footer-brand">
       <h3>Natan Body Piercing</h3>
-      <p>Joyería en titanio grado implante para piercing. Todas las piezas están sujetas a disponibilidad de stock.</p>
+      <p>Joyería en titanio grado implante para piercing.</p>
     </div>
     <div>
       <ul class="notes-list" id="notes-list"></ul>
@@ -643,9 +643,11 @@
   document.getElementById('logo-img').src = logo || '';
 
   // Notes: last one is usually "MUCHAS GRACIAS!" -> treat as thanks line
-  const thanksIdx = notes.findIndex(n => /gracias/i.test(n));
-  const mainNotes = thanksIdx >= 0 ? notes.filter((_,i)=>i!==thanksIdx) : notes;
-  const thanksText = thanksIdx >= 0 ? notes[thanksIdx] : '';
+  const EXCLUDED_NOTES = ['todas las joyas estan sujetas a stock'];
+  const notesFiltered = notes.filter(n => !EXCLUDED_NOTES.some(ex => n.trim().toLowerCase().includes(ex)));
+  const thanksIdx = notesFiltered.findIndex(n => /gracias/i.test(n));
+  const mainNotes = thanksIdx >= 0 ? notesFiltered.filter((_,i)=>i!==thanksIdx) : notesFiltered;
+  const thanksText = thanksIdx >= 0 ? notesFiltered[thanksIdx] : '';
   function toSentenceCase(s){
     const lower = s.toLowerCase()
       .replace(/gs\./gi, 'Gs.')
